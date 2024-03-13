@@ -1,0 +1,8 @@
+fastapi
+pydantic
+uvicorn
+transformers
+gnews
+fastapi_utilities
+torch
+newspaper3k
