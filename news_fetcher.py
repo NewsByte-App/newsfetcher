@@ -22,7 +22,6 @@ def fetch_news_for_category(category):
 
         if news_data.get('articles'):
             for article in news_data['articles']:
-                print(article)
                 news_item = {
                     'title': article.get('title'),
                     'url': article.get('url'),
@@ -30,7 +29,8 @@ def fetch_news_for_category(category):
                     'description': article.get('description'),
                     'publishedAt': article.get('publishedAt'),
                     'category': category,
-                    'image_url': article.get('urlToImage')
+                    # Fix: Removed the comma after 'image_url'
+                    'image_url': article.get('urlToImage') or ""
                 }
                 news_list.append(news_item)
     except requests.RequestException as e:

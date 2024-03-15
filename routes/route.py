@@ -4,12 +4,12 @@ from fastapi import APIRouter
 from models.news import News
 from config.database import news_collection
 from gnews import GNews
-from transformers import pipeline
+from transformers import pipeline, BartTokenizer, BartForConditionalGeneration
 
 
 from news_fetcher import fetch_news
 
-summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+summarizer = pipeline("summarization", model="./model_data/bart-large-cnn")
 
 
 router = APIRouter()
@@ -18,7 +18,7 @@ google_news = GNews(language='en', country='US', period='1d')
 
 
 @router.on_event('startup')
-@repeat_every(seconds=43200)
+@repeat_every(seconds=100)
 async def curate_news():
     try:
         res = fetch_news()
@@ -43,6 +43,8 @@ async def curate_news():
                         author=data['author'],
                     )
                     news_collection.insert_one(dict(news_item))
+                    print("Fetched")
+
     except Exception as e:
         print(e)
 
@@ -59,9 +61,7 @@ async def summarize():
                 data['content'].strip(), max_length=120, truncation=True)
             data['summary'] = summary[0]['summary_text']
             data['summarized'] = True
-            print(data)
-            updated_news = news_collection.update({'_id': data['_id']}, data)
-            print(updated_news)
-            print("Done")
+            news_collection.update({'_id': data['_id']}, data)
+            print("Summarized")
     except Exception as e:
         print(e)
