@@ -12,8 +12,6 @@ RUN pip install --default-timeout=10000 -r requirements.txt
 
 # First, copy only the necessary files to avoid invalidating the cache unnecessarily
 # Ensure your model_data directory is at the root of your project next to the Dockerfile
-COPY ./model_data ./model_data
-
 # Copy the rest of the application code to the working directory
 # This is done after installing requirements to leverage Docker cache for faster builds
 COPY . .
