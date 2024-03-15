@@ -4,8 +4,7 @@ from fastapi import APIRouter
 from models.news import News
 from config.database import news_collection
 from gnews import GNews
-from transformers import pipeline, BartTokenizer, BartForConditionalGeneration
-
+from transformers import pipeline
 
 from news_fetcher import fetch_news
 
@@ -15,6 +14,17 @@ summarizer = pipeline("summarization", model="./model_data/bart-large-cnn")
 router = APIRouter()
 
 google_news = GNews(language='en', country='US', period='1d')
+
+
+# @router.on_event('startup')
+# @repeat_every(seconds=100000)
+# async def download_model():
+#     model_name = "facebook/bart-large-cnn"
+#     tokenizer = BartTokenizer.from_pretrained(model_name)
+#     model = BartForConditionalGeneration.from_pretrained(model_name)
+
+#     model.save_pretrained('./model_data/bart-large-cnn')
+#     tokenizer.save_pretrained('./model_data/bart-large-cnn')
 
 
 @router.on_event('startup')
