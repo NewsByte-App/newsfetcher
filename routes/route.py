@@ -8,7 +8,7 @@ from transformers import pipeline
 
 from news_fetcher import fetch_news
 
-summarizer = pipeline("summarization", model="./model_data/bart-large-cnn")
+summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 
 
 router = APIRouter()
