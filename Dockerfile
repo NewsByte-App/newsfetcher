@@ -8,7 +8,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install the requirements
-RUN pip install --default-timeout=10000 -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 # First, copy only the necessary files to avoid invalidating the cache unnecessarily
 # Ensure your model_data directory is at the root of your project next to the Dockerfile

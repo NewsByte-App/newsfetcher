@@ -46,7 +46,8 @@ async def curate_news():
                             data['publishedAt'].rstrip('Z')),
                         url=data["url"],
                         category=data['category'],
-                        summary="",
+                        summary=summarizer(
+                            data['content'].strip(), max_length=120, truncation=True)[0]['summary_text'],
                         content=content.text,
                         image_url=data['image_url'],
                         summarized=False,
@@ -59,19 +60,19 @@ async def curate_news():
         print(e)
 
 
-@router.on_event('startup')
-# Consider adjusting the frequency based on your needs
-@repeat_every(seconds=300)
-async def summarize():
-    try:
-        news = news_collection.find({'summarized': False})
+# @router.on_event('startup')
+# # Consider adjusting the frequency based on your needs
+# @repeat_every(seconds=300)
+# async def summarize():
+#     try:
+#         news = news_collection.find({'summarized': False})
 
-        for data in news:
-            summary = summarizer(
-                data['content'].strip(), max_length=120, truncation=True)
-            data['summary'] = summary[0]['summary_text']
-            data['summarized'] = True
-            news_collection.update({'_id': data['_id']}, data)
-            print("Summarized")
-    except Exception as e:
-        print(e)
+#         for data in news:
+#             summary = summarizer(
+#                 data['content'].strip(), max_length=120, truncation=True)
+#             data['summary'] = summary[0]['summary_text']
+#             data['summarized'] = True
+#             news_collection.update({'_id': data['_id']}, data)
+#             print("Summarized")
+#     except Exception as e:
+#         print(e)

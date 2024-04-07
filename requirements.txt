@@ -2,6 +2,7 @@ fastapi
 pydantic
 uvicorn
 transformers
+lxmi==5.0.1
 gnews
 fastapi_utilities
 torch
