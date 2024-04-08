@@ -28,7 +28,7 @@ google_news = GNews(language='en', country='US', period='1d')
 
 
 @router.on_event('startup')
-@repeat_every(seconds=100)
+@repeat_every(seconds=10)
 async def curate_news():
     try:
         res = fetch_news()
@@ -47,10 +47,10 @@ async def curate_news():
                         url=data["url"],
                         category=data['category'],
                         summary=summarizer(
-                            data['content'].strip(), max_length=120, truncation=True)[0]['summary_text'],
+                            content.text.strip(), max_length=120, truncation=True)[0]['summary_text'],
                         content=content.text,
                         image_url=data['image_url'],
-                        summarized=False,
+                        summarized=True,
                         author=data['author'],
                     )
                     news_collection.insert_one(dict(news_item))
